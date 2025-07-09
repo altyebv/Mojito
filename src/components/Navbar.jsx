@@ -21,7 +21,7 @@ export default function Navbar() {
     return (
         <nav>
 
-            <div >
+            <div className='px-6 '>
                 <a href='/home' className='flex items-center gap-2'>
                     <img src='/images/logo.png' alt='logo' />
                     <p>Shaltoot</p>

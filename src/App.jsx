@@ -7,6 +7,7 @@ import './App.css'
 import Navbar from "./components/Navbar.jsx";
 import Hero from "./components/Hero.jsx";
 import Cocktails from "./components/Cocktails.jsx";
+import About from "./components/About.jsx";
 
 function App() {
 
@@ -16,6 +17,7 @@ function App() {
         <Navbar/>
         <Hero/>
         <Cocktails/>
+        <About/>
     </main>
   )
 }
