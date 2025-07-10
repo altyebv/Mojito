@@ -24,7 +24,7 @@ export default function Navbar() {
             <div className='px-6 '>
                 <a href='/home' className='flex items-center gap-2'>
                     <img src='/images/logo.png' alt='logo' />
-                    <p>Shaltoot</p>
+                    <p>Shaltout</p>
                 </a>
                 <ul>
                     {navLinks.map((link) => (
