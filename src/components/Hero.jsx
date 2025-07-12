@@ -15,10 +15,8 @@ const Hero = () => {
         const heroSplit = new SplitText(".title", { type: "chars, words" });
         const paragraphSplit = new SplitText(".subtitle", { type: "lines" });
 
-        // Apply gradient class before animating
         heroSplit.chars.forEach((char) => char.classList.add("text-gradient"));
 
-        // Base animation for title and subtitle (shared for both mobile and desktop)
         gsap.from(heroSplit.chars, {
             yPercent: 100,
             stagger: 0.09,
@@ -35,39 +33,60 @@ const Hero = () => {
             delay: 1,
         });
 
-        // Scroll-triggered leaf animation (shared logic)
-        gsap
-            .timeline({
-                scrollTrigger: {
-                    trigger: "#hero",
-                    start: "top bottom",
-                    end: "bottom top",
-                    scrub: true,
-                },
-            })
+        gsap.timeline({
+            scrollTrigger: {
+                trigger: "#hero",
+                start: "top bottom",
+                end: "bottom top",
+                scrub: true,
+            },
+        })
             .to(".right-leaf", { y: 200 }, 0)
             .to(".left-leaf", { y: -200 }, 0);
 
-        // 🎯 Mobile vs Desktop video pin + animation customization
-        const startValue = isMobile ? "top 70%" : "center 60%";
-        const endValue = isMobile ? "bottom top" : "120% top";
+        // ✅ Handle mobile video loop manually with GSAP
+        if (isMobile) {
+            const video = videoRef.current;
 
-        const tl = gsap.timeline({
-            scrollTrigger: {
-                trigger: "video",
-                start: startValue,
-                end: endValue,
-                scrub: true,
-                pin: !isMobile, // 👈 optionally skip pinning on mobile
-            },
-        });
+            const loopVideo = () => {
+                gsap.to(video, {
+                    currentTime: 0,
+                    duration: 0,
+                    onComplete: () => {
+                        video.play(); // start from beginning again
+                    },
+                });
+            };
 
-        // Delay until video metadata is ready
-        videoRef.current.onloadedmetadata = () => {
-            tl.to(videoRef.current, {
-                currentTime: videoRef.current.duration,
+            video.addEventListener("ended", loopVideo);
+
+            // Start playing the video
+            video.onloadedmetadata = () => {
+                video.play();
+            };
+
+            // Cleanup on unmount
+            return () => {
+                video.removeEventListener("ended", loopVideo);
+            };
+        } else {
+            // 🖥️ Desktop scroll-controlled video
+            const tl = gsap.timeline({
+                scrollTrigger: {
+                    trigger: "video",
+                    start: "center 60%",
+                    end: "120% top",
+                    scrub: true,
+                    pin: true,
+                },
             });
-        };
+
+            videoRef.current.onloadedmetadata = () => {
+                tl.to(videoRef.current, {
+                    currentTime: videoRef.current.duration,
+                });
+            };
+        }
     }, [isMobile]);
 
     return (
