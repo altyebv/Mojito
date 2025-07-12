@@ -19,7 +19,7 @@ export default function Navbar() {
         });
     },[])
     return (
-        <nav>
+        <nav id='navbar'>
 
             <div className='px-6 '>
                 <a href='/home' className='flex items-center gap-2'>

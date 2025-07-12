@@ -24,6 +24,17 @@ body {
   overflow-x: hidden;
 }
 
+#navbar {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 50;
+  background-color: rgba(0, 0, 0, 0.4); /* semi-transparent */
+  backdrop-filter: blur(10px); /* this is the key */
+  -webkit-backdrop-filter: blur(10px); /* Safari support */
+}
+
+
 @utility flex-center {
   @apply flex justify-center items-center;
 }
